@@ -1,0 +1,32 @@
+name: 'Terraform state manipulation'
+run-name: 'Terraform state manipulation on commit: ${{ github.sha }}'
+
+# Workflow so that developers then can execute state manipulation tasks in a safe and recorded way
+
+# for now I don't see a reason to be triggered other than manually. You could trigger by pull request, but I would be
+# only run commands with the -dry-run flag if supported.
+on:
+  workflow_dispatch: 
+
+# need to be able to checkout the repository
+permissions: 
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  # https://developer.hashicorp.com/terraform/cli/config/environment-variables#tf_in_automation
+  TF_IN_AUTOMATION: true
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    steps:
+      # we need to install Terraform since we are not using a container
+      - uses: hashicorp/setup-terraform@v3.0.0
+        with:
+          terraform_version: "1.5.5"
+      - uses: actions/checkout@v4
+      - run: './state_manipulation.sh'
