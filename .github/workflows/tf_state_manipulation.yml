@@ -20,6 +20,9 @@ env:
   # https://developer.hashicorp.com/terraform/cli/config/environment-variables#tf_in_automation
   TF_IN_AUTOMATION: true
 
+# ensure only one job runs at a time
+concurrency: single
+
 jobs:
   execute:
     runs-on: ubuntu-latest
