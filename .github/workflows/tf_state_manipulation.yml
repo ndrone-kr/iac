@@ -25,6 +25,8 @@ concurrency: single
 
 jobs:
   execute:
+    # we only want to execute from the main branch
+    if: ${{ github.ref == 'refs/heads/main'}}
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{ github.ref }}
